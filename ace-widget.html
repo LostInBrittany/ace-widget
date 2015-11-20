@@ -113,7 +113,7 @@ Polymer({
 
     this.session = editor.getSession();
 
-    editor.setTheme("ace/theme/"+this.theme);
+    editor.setTheme(this.theme);
 
     editor.focus();
     this.readonlyChanged();
@@ -151,16 +151,15 @@ Polymer({
   },
   fontSizeChanged: function () {
     this.$.editor.style.fontSize = this.fontSize+"pt";
-    console.log("fontSize", this.$.editor.style.fontSize)
   },
   modeChanged: function () {
-    this.editor.getSession().setMode('ace/mode/' + this.mode);
+    this.editor.getSession().setMode(this.mode);
   },
   softtabsChanged: function () {
     this.editor.getSession().setUseSoftTabs(this.softtabs);
   },
   themeChanged: function () {
-    this.editor.setTheme('ace/theme/' + this.theme);
+    this.editor.setTheme(this.theme);
     return;
 
     this._whenMatches(document.head, '#ace-' + this.theme, 'applyTheme');
