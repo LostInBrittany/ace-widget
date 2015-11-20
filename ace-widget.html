@@ -1,0 +1,220 @@
+<!--
+@license MIT
+Copyright (c) 2015 Horacio "LostInBrittany" Gonzalez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<script src="../ace-builds/src-min-noconflict/ace.js"></script>
+<script src="../ace-builds/src-min-noconflict/ext-language_tools.js"></script>
+<script src="../ace-builds/src-min-noconflict/snippets/snippets.js"></script>
+
+<dom-module id="ace-widget">
+<style>
+:host {
+  display: block;
+}
+#editor {
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+}
+</style>
+<template>
+  <div id="editor"></div>
+</template>
+</dom-module>
+
+<script>
+Polymer({
+  is: 'ace-widget',
+  properties: {
+    theme: {
+      type: String,
+      value: 'eclipse'
+    },
+    mode: {
+      type: String,
+      notify: true,
+    },
+    value: {
+      type: String
+    },
+    readonly: {
+      type: Boolean,
+      value: false
+    },
+    softtabs: {
+      type: Boolean,
+      value: true
+    },
+    wrap: {
+      type: Boolean,
+      value: false
+    },
+    fontSize: {
+      type: Number,
+      value: 14
+    },
+    tabSize: {
+      type: Number,
+      value: 4
+    },
+    snippets: {
+      type: String,
+      notify: true
+    },
+    autoComplete: {
+      type: Object,
+      notify: true
+    },
+    jsHintOptions: {
+      type: Object,
+      notify: true
+    },
+    workerPath: {
+      type: String
+    },
+    minlines: {
+      type: Number,
+      value: 15
+    },
+    maxlines: {
+      type: Number,
+      value: 30
+    }
+  },
+  ready: function () {
+    var self = this;
+    var div = this.$.editor;
+    div.style.width = '100%';
+    div.style.height = '100%';
+    this.editor = ace.edit(div);
+
+  },
+  attached: function () {
+    this.initializeEditor();
+  },
+
+  initializeEditor: function () {
+
+    var self = this;
+    var editor = this.editor;
+
+    this.head = document.head;
+
+    this.themeChanged();
+    ace.config.set('basePath', this.resolveUrl('../ace-builds/src-min-noconflict/'));
+    editor.setOption('enableSnippets', true);
+    editor.setOption('enableBasicAutocompletion', true);
+    editor.setOption('enableLiveAutocompletion', true);
+
+    this.session = editor.getSession();
+
+    editor.setTheme("ace/theme/"+this.theme);
+
+    editor.focus();
+    this.readonlyChanged();
+    this.wrapChanged();
+    this.tabSizeChanged();
+    this.modeChanged();
+    this.softtabsChanged();
+    this.fontSizeChanged();
+    this.value = this.textContent;
+
+
+    // min and max lines
+    editor.setOptions({
+        minLines: this.minlines,
+        maxLines: this.maxlines
+    });
+
+    // snippets
+    var snippetManager = ace.require("ace/snippets").snippetManager;
+    snippetManager.register(this.snippets, 'javascript');
+
+    // autoComplete
+    var langTools = ace.require("ace/ext/language_tools");
+    var self = this;
+    var rhymeCompleter = {
+      getCompletions: function(editor, session, pos, prefix, callback) {
+        if (prefix.length === 0) {
+          callback(null, []);
+          return;
+        }
+        callback(null, self.autoComplete || []);
+      }
+    };
+    langTools.addCompleter(rhymeCompleter);
+  },
+  fontSizeChanged: function () {
+    this.$.editor.style.fontSize = this.fontSize+"pt";
+    console.log("fontSize", this.$.editor.style.fontSize)
+  },
+  modeChanged: function () {
+    this.editor.getSession().setMode('ace/mode/' + this.mode);
+  },
+  softtabsChanged: function () {
+    this.editor.getSession().setUseSoftTabs(this.softtabs);
+  },
+  themeChanged: function () {
+    this.editor.setTheme('ace/theme/' + this.theme);
+    return;
+
+    this._whenMatches(document.head, '#ace-' + this.theme, 'applyTheme');
+  },
+  _whenMatches: function (node, selector, method) {
+    var m = node.querySelector(selector);
+    if (m) {
+      if (this[method]) {
+        this[method].call(this, m);
+      }
+    } else {
+      var cb = this._whenMatches.bind(this, node, selector, method);
+      this.onMutation(node, cb);
+    }
+  },
+  applyTheme: function (style) {
+    if (style) {
+      this.appendChild(cloneStyle(style));
+    } else {
+
+    }
+  },
+  valueChanged: function () {
+    this.editorValue = this.value;
+    this.editor.clearSelection();
+    this.editor.resize();
+    this.editor.focus();
+  },
+  readonlyChanged: function () {
+    this.editor.setReadOnly(this.readonly);
+    this.editor.setHighlightActiveLine(!this.readonly);
+    this.editor.setHighlightGutterLine(!this.readonly);
+    this.editor.renderer.$cursorLayer.element.style.opacity = this.readonly ? 0 : 1;
+  },
+  wrapChanged: function () {
+    this.editor.getSession().setUseWrapMode(this.wrap);
+  },
+  tabSizeChanged: function () {
+    if (this.tabSize) {
+      this.editor.getSession().setTabSize(this.tabSize);
+    }
+  },
+  editorChangeAction: function () {
+    this.fire('editor-input', {value: this.editorValue, oldValue: this._value});
+  },
+  get editorValue() {
+    return this.editor.getValue();
+  },
+  set editorValue(value) {
+    this._value = value;
+    this.editor.setValue(value);
+  },
+  focus: function () {
+    this.editor.focus();
+  }
+})
+</script>

@@ -1,0 +1,27 @@
+{
+  "name": "LostInBrittany/ace-widget",
+  "version": "1.0.0",
+  "authors": [
+    "Horacio Gonzalez <horacio.gonzalez@gmail.com>"
+  ],
+  "description": "LostInBrittany's Ace (http://ace.c9.io/) widget",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "lostinbrittany",
+    "ace"
+  ],
+  "main": "ace-widget.html",
+  "license": "MIT",
+  "homepage": "https://github.com/LostInBrittany/ace-widget",
+  "ignore": [
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~1.2.0",
+    "ace-builds": "~1.2.0"
+  },
+  "devDependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
