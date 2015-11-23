@@ -198,8 +198,7 @@ Polymer({
     }
   },
   editorChangeAction: function () {
-    console.log("OMG, the editor changed!", this.editorValue)
-    this.fire('editor-input', {value: this.editorValue, oldValue: this._value});
+    this.fire('editor-content', {value: this.editorValue, oldValue: this._value});
   },
   get editorValue() {
     return this.editor.getValue();

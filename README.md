@@ -64,10 +64,10 @@ Name        |  Description
 
 ## Events
 
-Name           |  Description
----            | ---
-`change`       | Triggered when editor content gets changed
-`editor-ready` | Triggered once Ace editor instance is created.
+Name             |  Description
+---              | ---
+`editor-content` | Triggered when editor content gets changed
+`editor-ready`   | Triggered once Ace editor instance is created.
 
 ## Contributing
 
