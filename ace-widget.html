@@ -104,6 +104,8 @@ Polymer({
     editor.setOption('enableBasicAutocompletion', true);
     editor.setOption('enableLiveAutocompletion', true);
 
+    editor.on('change', this.editorChangeAction.bind(this));
+
     this.session = editor.getSession();
 
     editor.setTheme(this.theme);
@@ -196,6 +198,7 @@ Polymer({
     }
   },
   editorChangeAction: function () {
+    console.log("OMG, the editor changed!", this.editorValue)
     this.fire('editor-input', {value: this.editorValue, oldValue: this._value});
   },
   get editorValue() {
