@@ -70,13 +70,6 @@ Polymer({
       type: Object,
       notify: true
     },
-    jsHintOptions: {
-      type: Object,
-      notify: true
-    },
-    workerPath: {
-      type: String
-    },
     minlines: {
       type: Number,
       value: 15
@@ -138,7 +131,7 @@ Polymer({
     // autoComplete
     var langTools = ace.require("ace/ext/language_tools");
     var self = this;
-    var rhymeCompleter = {
+    var einsteinCompleter = {
       getCompletions: function(editor, session, pos, prefix, callback) {
         if (prefix.length === 0) {
           callback(null, []);
@@ -147,7 +140,7 @@ Polymer({
         callback(null, self.autoComplete || []);
       }
     };
-    langTools.addCompleter(rhymeCompleter);
+    langTools.addCompleter(einsteinCompleter);
   },
   fontSizeChanged: function () {
     this.$.editor.style.fontSize = this.fontSize+"pt";
