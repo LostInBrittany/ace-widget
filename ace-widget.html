@@ -40,7 +40,8 @@ Polymer({
       notify: true,
     },
     value: {
-      type: String
+      type: String,
+      observer: "valueChanged"
     },
     readonly: {
       type: Boolean,
@@ -80,6 +81,7 @@ Polymer({
     }
   },
   ready: function () {
+    console.debug("[ace-widget] ready")
     var self = this;
     var div = this.$.editor;
     div.style.width = '100%';
@@ -88,6 +90,8 @@ Polymer({
 
   },
   attached: function () {
+    console.debug("[ace-widget] attached")
+
     this.initializeEditor();
   },
 
@@ -111,13 +115,18 @@ Polymer({
     editor.setTheme(this.theme);
 
     editor.focus();
+    console.debug("[ace-widget] initializeEditor", this.value)
     this.readonlyChanged();
     this.wrapChanged();
     this.tabSizeChanged();
     this.modeChanged();
     this.softtabsChanged();
     this.fontSizeChanged();
-    this.value = this.textContent;
+    if (this.value === undefined) {
+      this.value = this.textContent;
+    }
+
+    this.valueChanged();
 
 
     // min and max lines
@@ -178,10 +187,15 @@ Polymer({
     }
   },
   valueChanged: function () {
-    this.editorValue = this.value;
-    this.editor.clearSelection();
-    this.editor.resize();
-    this.editor.focus();
+    if (this.editor != undefined) {
+      console.debug("[ace-widget] valueChanged", this.value)
+      console.log(this.editor)
+      this.editorValue = this.value;
+      this.editor.clearSelection();
+      this.editor.resize();
+      this.editor.focus();
+    }
+
   },
   readonlyChanged: function () {
     this.editor.setReadOnly(this.readonly);
