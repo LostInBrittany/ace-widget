@@ -40,8 +40,7 @@ Polymer({
       notify: true,
     },
     value: {
-      type: String,
-      observer: "valueChanged"
+      type: String
     },
     readonly: {
       type: Boolean,
@@ -189,7 +188,6 @@ Polymer({
   valueChanged: function () {
     if (this.editor != undefined) {
       console.debug("[ace-widget] valueChanged", this.value)
-      console.log(this.editor)
       this.editorValue = this.value;
       this.editor.clearSelection();
       this.editor.resize();
@@ -212,6 +210,7 @@ Polymer({
     }
   },
   editorChangeAction: function () {
+    console.log("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
     this.fire('editor-content', {value: this.editorValue, oldValue: this._value});
   },
   get editorValue() {
@@ -220,6 +219,7 @@ Polymer({
   set editorValue(value) {
     this._value = value;
     this.editor.setValue(value);
+    console.log("[ace-widget] set editorValue", this.editorValue)
   },
   focus: function () {
     this.editor.focus();
