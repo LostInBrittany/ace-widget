@@ -80,7 +80,7 @@ Polymer({
     }
   },
   ready: function () {
-    console.debug("[ace-widget] ready")
+    // console.debug("[ace-widget] ready")
     var self = this;
     var div = this.$.editor;
     div.style.width = '100%';
@@ -89,7 +89,7 @@ Polymer({
 
   },
   attached: function () {
-    console.debug("[ace-widget] attached")
+    // console.debug("[ace-widget] attached")
 
     this.initializeEditor();
   },
@@ -114,7 +114,7 @@ Polymer({
     editor.setTheme(this.theme);
 
     editor.focus();
-    console.debug("[ace-widget] initializeEditor", this.value)
+    // console.debug("[ace-widget] initializeEditor", this.value)
     this.readonlyChanged();
     this.wrapChanged();
     this.tabSizeChanged();
@@ -187,7 +187,7 @@ Polymer({
   },
   valueChanged: function () {
     if (this.editor != undefined) {
-      console.debug("[ace-widget] valueChanged", this.value)
+      // console.debug("[ace-widget] valueChanged", this.value)
       this.editorValue = this.value;
       this.editor.clearSelection();
       this.editor.resize();
@@ -210,7 +210,7 @@ Polymer({
     }
   },
   editorChangeAction: function () {
-    console.log("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
+    // console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
     this.fire('editor-content', {value: this.editorValue, oldValue: this._value});
   },
   get editorValue() {
@@ -219,7 +219,7 @@ Polymer({
   set editorValue(value) {
     this._value = value;
     this.editor.setValue(value);
-    console.log("[ace-widget] set editorValue", this.editorValue)
+    // console.debug("[ace-widget] set editorValue", this.editorValue)
   },
   focus: function () {
     this.editor.focus();
