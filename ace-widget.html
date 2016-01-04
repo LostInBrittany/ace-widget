@@ -153,7 +153,7 @@ Polymer({
     langTools.addCompleter(einsteinCompleter);
   },
   fontSizeChanged: function () {
-    this.$.editor.style.fontSize = this.fontSize+"pt";
+    this.$.editor.style.fontSize = this.fontSize+"px";
   },
   modeChanged: function () {
     this.editor.getSession().setMode(this.mode);
