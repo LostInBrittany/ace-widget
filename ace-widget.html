@@ -78,7 +78,11 @@ Polymer({
       type: Number,
       value: 30
     },
-    liveAutocompletion: {
+    enableLiveAutocompletion: {
+      type: Boolean,
+      value: false
+    },
+    enableSnippets: {
       type: Boolean,
       value: false
     }
@@ -108,9 +112,9 @@ Polymer({
 
     this.themeChanged();
     ace.config.set('basePath', this.resolveUrl('../ace-builds/src-min-noconflict/'));
-    editor.setOption('enableSnippets', true);
+    editor.setOption('enableSnippets', this.enableSnippets);
     editor.setOption('enableBasicAutocompletion', true);
-    editor.setOption('enableLiveAutocompletion', this.liveAutocompletion);
+    editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
 
     editor.on('change', this.editorChangeAction.bind(this));
 
@@ -140,9 +144,10 @@ Polymer({
     });
 
     // snippets
-    var snippetManager = ace.require("ace/snippets").snippetManager;
-    snippetManager.register(this.snippets, 'javascript');
-
+    if (this.enableSnippets) {
+      var snippetManager = ace.require("ace/snippets").snippetManager;
+      snippetManager.register(this.snippets, 'javascript');
+    }
     // autoComplete
     var langTools = ace.require("ace/ext/language_tools");
     var self = this;
