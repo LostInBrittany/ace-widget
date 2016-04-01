@@ -11,21 +11,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -->
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>lostinbrittany-ace-widget test</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">    
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <title>lostinbrittany-ace-widget</title>
 
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
 
-    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" />
-    <script src="./bower_components/jquery/dist/jquery.js"></script>
-    <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../bootstrap/dist/css/bootstrap.css" />
+    <script src="../jquery/dist/jquery.js"></script>
+    <script src="../bootstrap/dist/js/bootstrap.js"></script>
 
-    <script src="./bower_components/webcomponentsjs/webcomponents.js"></script>
-
-
-    <link   rel="import" href="./bower_components/polymer/polymer.html">
-    <link   rel="import" href="./bower_components/ace-widget/ace-widget.html">
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link   rel="import" href="../polymer/polymer.html">
+    <link   rel="import" href="../ace-widget/ace-widget.html">
 
     <style>
       .spacer-10 { width:100%; height:10px; }
@@ -36,7 +35,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <body unresolved>
     <div class="spacer-50"></div>
     <div class="container">
-      <ace-widget   theme="ace/theme/eclipse" mode="ace/mode/c_cpp">
+
+      <ace-widget   theme="ace/theme/eclipse" softtabs="true" wrap="true" value="This is a nice widget">
       </ace-widget>
     </div>
   </body>

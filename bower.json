@@ -1,6 +1,5 @@
 {
-  "name": "LostInBrittany/ace-widget",
-  "version": "1.0.9",
+  "name": "ace-widget",
   "authors": [
     "Horacio Gonzalez <horacio.gonzalez@gmail.com>"
   ],
@@ -22,6 +21,11 @@
     "ace-builds": "~1.2.0"
   },
   "devDependencies": {
-    "bootstrap": "~3.3.2"
+    "bootstrap": "~3.3.2",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^1.0.0",
+    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
+    "web-component-tester": "^4.0.0"
   }
 }

@@ -14,13 +14,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 <dom-module id="ace-widget">
 <style>
-:host {
-  display: block;
-}
-#editor {
-  border: 1px solid #e3e3e3;
-  border-radius: 4px;
-}
+  :host {
+    display: block;
+    width: 100%;
+  }
+  #editor {
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+  }
 </style>
 <template>
   <div id="editor"></div>
@@ -28,211 +29,217 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 </dom-module>
 
 <script>
-Polymer({
-  is: 'ace-widget',
-  properties: {
-    theme: {
-      type: String,
-      value: 'eclipse'
+  Polymer({
+    is: 'ace-widget',
+    properties: {
+      theme: {
+        type: String,
+        value: 'eclipse'
+      },
+      mode: {
+        type: String,
+        notify: true,
+      },
+      value: {
+        type: String,
+        notify: true
+      },
+      readonly: {
+        type: Boolean,
+        value: false
+      },
+      softtabs: {
+        type: Boolean,
+        value: true
+      },
+      wrap: {
+        type: Boolean,
+        value: false
+      },
+      fontSize: {
+        type: String,
+        value: "14px"
+      },
+      tabSize: {
+        type: Number,
+        value: 4
+      },
+      snippets: {
+        type: String,
+        notify: true
+      },
+      autoComplete: {
+        type: Object,
+        notify: true
+      },
+      minlines: {
+        type: Number,
+        value: 15
+      },
+      maxlines: {
+        type: Number,
+        value: 30
+      },
+      enableLiveAutocompletion: {
+        type: Boolean,
+        value: false
+      },
+      enableSnippets: {
+        type: Boolean,
+        value: false
+      }
+
     },
-    mode: {
-      type: String,
-      notify: true,
+    ready: function () {
+      // console.debug("[ace-widget] ready")
+      var self = this;
+      var div = this.$.editor;
+      div.style.width = '100%';
+      div.style.height = '100%';
+      this.editor = ace.edit(div);
+
     },
-    value: {
-      type: String
+    attached: function () {
+      // console.debug("[ace-widget] attached")
+      this.initializeEditor();
     },
-    readonly: {
-      type: Boolean,
-      value: false
-    },
-    softtabs: {
-      type: Boolean,
-      value: true
-    },
-    wrap: {
-      type: Boolean,
-      value: false
-    },
-    fontSize: {
-      type: String,
-      value: "14px"
-    },
-    tabSize: {
-      type: Number,
-      value: 4
-    },
-    snippets: {
-      type: String,
-      notify: true
-    },
-    autoComplete: {
-      type: Object,
-      notify: true
-    },
-    minlines: {
-      type: Number,
-      value: 15
-    },
-    maxlines: {
-      type: Number,
-      value: 30
-    },
-    enableLiveAutocompletion: {
-      type: Boolean,
-      value: false
-    },
-    enableSnippets: {
-      type: Boolean,
-      value: false
-    }
 
-  },
-  ready: function () {
-    // console.debug("[ace-widget] ready")
-    var self = this;
-    var div = this.$.editor;
-    div.style.width = '100%';
-    div.style.height = '100%';
-    this.editor = ace.edit(div);
+    initializeEditor: function () {
 
-  },
-  attached: function () {
-    // console.debug("[ace-widget] attached")
+      var self = this;
+      var editor = this.editor;
 
-    this.initializeEditor();
-  },
+      this.head = document.head;
 
-  initializeEditor: function () {
+      this.themeChanged();
+      ace.config.set('basePath', this.resolveUrl('../ace-builds/src-min-noconflict/'));
+      editor.setOption('enableSnippets', this.enableSnippets);
+      editor.setOption('enableBasicAutocompletion', true);
+      editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
 
-    var self = this;
-    var editor = this.editor;
+      editor.on('change', this.editorChangeAction.bind(this));
 
-    this.head = document.head;
+      this.session = editor.getSession();
 
-    this.themeChanged();
-    ace.config.set('basePath', this.resolveUrl('../ace-builds/src-min-noconflict/'));
-    editor.setOption('enableSnippets', this.enableSnippets);
-    editor.setOption('enableBasicAutocompletion', true);
-    editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
+      editor.setTheme(this.theme);
 
-    editor.on('change', this.editorChangeAction.bind(this));
+      editor.focus();
+      this.readonlyChanged();
+      this.wrapChanged();
+      this.tabSizeChanged();
+      this.modeChanged();
+      this.softtabsChanged();
+      this.fontSizeChanged();
 
-    this.session = editor.getSession();
+      // Setting content
 
-    editor.setTheme(this.theme);
+      // Trying to get content as HTML content
+      var htmlContent = Polymer.dom(this).innerHTML.trim();
+      // If we have a value in the `value` attribute, we keep it, else we use the HTML content
+      if (this.value === undefined) {
+        this.value = htmlContent;
+        console.debug("[ace-widget] initializeEditor - using HTML content as value", this.value)
+      }
 
-    editor.focus();
-    // console.debug("[ace-widget] initializeEditor", this.value)
-    this.readonlyChanged();
-    this.wrapChanged();
-    this.tabSizeChanged();
-    this.modeChanged();
-    this.softtabsChanged();
-    this.fontSizeChanged();
-    if (this.value === undefined) {
-      this.value = this.textContent;
-    }
-
-    this.valueChanged();
+      this.valueChanged();
 
 
-    // min and max lines
-    editor.setOptions({
-        minLines: this.minlines,
-        maxLines: this.maxlines
-    });
+      // min and max lines
+      editor.setOptions({
+          minLines: this.minlines,
+          maxLines: this.maxlines
+      });
 
-    // snippets
-    if (this.enableSnippets) {
-      var snippetManager = ace.require("ace/snippets").snippetManager;
-      snippetManager.register(this.snippets, 'javascript');
-    }
-    // autoComplete
-    var langTools = ace.require("ace/ext/language_tools");
-    var self = this;
-    var aceWidgetCompleter = {
-      getCompletions: function(editor, session, pos, prefix, callback) {
-        if (prefix.length === 0) {
-          callback(null, []);
-          return;
+      // snippets
+      if (this.enableSnippets) {
+        var snippetManager = ace.require("ace/snippets").snippetManager;
+        snippetManager.register(this.snippets, 'javascript');
+      }
+      // autoComplete
+      var langTools = ace.require("ace/ext/language_tools");
+      var self = this;
+      var aceWidgetCompleter = {
+        getCompletions: function(editor, session, pos, prefix, callback) {
+          if (prefix.length === 0) {
+            callback(null, []);
+            return;
+          }
+          callback(null, self.autoComplete || []);
         }
-        callback(null, self.autoComplete || []);
-      }
-    };
-    langTools.addCompleter(aceWidgetCompleter);
-  },
-  fontSizeChanged: function () {
-    this.$.editor.style.fontSize = this.fontSize;
-  },
-  modeChanged: function () {
-    this.editor.getSession().setMode(this.mode);
-  },
-  softtabsChanged: function () {
-    this.editor.getSession().setUseSoftTabs(this.softtabs);
-  },
-  themeChanged: function () {
-    this.editor.setTheme(this.theme);
-    return;
+      };
+      langTools.addCompleter(aceWidgetCompleter);
+    },
+    fontSizeChanged: function () {
+      this.$.editor.style.fontSize = this.fontSize;
+    },
+    modeChanged: function () {
+      this.editor.getSession().setMode(this.mode);
+    },
+    softtabsChanged: function () {
+      this.editor.getSession().setUseSoftTabs(this.softtabs);
+    },
+    themeChanged: function () {
+      this.editor.setTheme(this.theme);
+      return;
 
-    this._whenMatches(document.head, '#ace-' + this.theme, 'applyTheme');
-  },
-  _whenMatches: function (node, selector, method) {
-    var m = node.querySelector(selector);
-    if (m) {
-      if (this[method]) {
-        this[method].call(this, m);
+      this._whenMatches(document.head, '#ace-' + this.theme, 'applyTheme');
+    },
+    _whenMatches: function (node, selector, method) {
+      var m = node.querySelector(selector);
+      if (m) {
+        if (this[method]) {
+          this[method].call(this, m);
+        }
+      } else {
+        var cb = this._whenMatches.bind(this, node, selector, method);
+        this.onMutation(node, cb);
       }
-    } else {
-      var cb = this._whenMatches.bind(this, node, selector, method);
-      this.onMutation(node, cb);
-    }
-  },
-  applyTheme: function (style) {
-    if (style) {
-      this.appendChild(cloneStyle(style));
-    } else {
+    },
+    applyTheme: function (style) {
+      if (style) {
+        this.appendChild(cloneStyle(style));
+      } else {
 
-    }
-  },
-  valueChanged: function () {
-    if (this.editor != undefined) {
-      // console.debug("[ace-widget] valueChanged", this.value)
-      this.editorValue = this.value;
-      this.editor.clearSelection();
-      this.editor.resize();
+      }
+    },
+    valueChanged: function () {
+      if (this.editor != undefined) {
+        // console.debug("[ace-widget] valueChanged", this.value)
+        this.editorValue = this.value;
+        this.editor.clearSelection();
+        this.editor.resize();
+        this.editor.focus();
+      }
+
+    },
+    readonlyChanged: function () {
+      this.editor.setReadOnly(this.readonly);
+      this.editor.setHighlightActiveLine(!this.readonly);
+      this.editor.setHighlightGutterLine(!this.readonly);
+      this.editor.renderer.$cursorLayer.element.style.opacity = this.readonly ? 0 : 1;
+    },
+    wrapChanged: function () {
+      this.editor.getSession().setUseWrapMode(this.wrap);
+    },
+    tabSizeChanged: function () {
+      if (this.tabSize) {
+        this.editor.getSession().setTabSize(this.tabSize);
+      }
+    },
+    editorChangeAction: function () {
+      // console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
+      this.fire('editor-content', {value: this.editorValue, oldValue: this._value});
+    },
+    get editorValue() {
+      return this.editor.getValue();
+    },
+    set editorValue(value) {
+      this._value = value;
+      this.editor.setValue(value);
+      // console.debug("[ace-widget] set editorValue", this.editorValue)
+    },
+    focus: function () {
       this.editor.focus();
     }
-
-  },
-  readonlyChanged: function () {
-    this.editor.setReadOnly(this.readonly);
-    this.editor.setHighlightActiveLine(!this.readonly);
-    this.editor.setHighlightGutterLine(!this.readonly);
-    this.editor.renderer.$cursorLayer.element.style.opacity = this.readonly ? 0 : 1;
-  },
-  wrapChanged: function () {
-    this.editor.getSession().setUseWrapMode(this.wrap);
-  },
-  tabSizeChanged: function () {
-    if (this.tabSize) {
-      this.editor.getSession().setTabSize(this.tabSize);
-    }
-  },
-  editorChangeAction: function () {
-    // console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
-    this.fire('editor-content', {value: this.editorValue, oldValue: this._value});
-  },
-  get editorValue() {
-    return this.editor.getValue();
-  },
-  set editorValue(value) {
-    this._value = value;
-    this.editor.setValue(value);
-    // console.debug("[ace-widget] set editorValue", this.editorValue)
-  },
-  focus: function () {
-    this.editor.focus();
-  }
-})
+  })
 </script>
