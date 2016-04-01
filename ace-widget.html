@@ -98,6 +98,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       div.style.height = '100%';
       this.editor = ace.edit(div);
 
+      this.fire('editor-ready', {value: this.editor, oldValue: null});
+
     },
     attached: function () {
       // console.debug("[ace-widget] attached")
@@ -138,7 +140,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // If we have a value in the `value` attribute, we keep it, else we use the HTML content
       if (this.value === undefined) {
         this.value = htmlContent;
-        console.debug("[ace-widget] initializeEditor - using HTML content as value", this.value)
+        // console.debug("[ace-widget] initializeEditor - using HTML content as value", this.value)
       }
 
       this.valueChanged();
