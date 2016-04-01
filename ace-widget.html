@@ -42,7 +42,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       },
       value: {
         type: String,
-        notify: true
+        notify: true,
+        observer: "valueChanged"
       },
       readonly: {
         type: Boolean,
@@ -141,11 +142,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if (this.value === undefined) {
         this.value = htmlContent;
         // console.debug("[ace-widget] initializeEditor - using HTML content as value", this.value)
+      } else {
+        // Forcing a valueChanged() call, because the initial one din't do anything as editor wasn't created yet
+        this.valueChanged();
       }
-
-      this.valueChanged();
-
-
       // min and max lines
       editor.setOptions({
           minLines: this.minlines,
