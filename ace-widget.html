@@ -39,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       mode: {
         type: String,
         notify: true,
+        observer: 'modeChanged'
       },
       value: {
         type: String,
@@ -175,6 +176,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       this.$.editor.style.fontSize = this.fontSize;
     },
     modeChanged: function () {
+      if (!this.editor) return;
       this.editor.getSession().setMode(this.mode);
     },
     softtabsChanged: function () {
