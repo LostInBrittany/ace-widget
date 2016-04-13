@@ -34,11 +34,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     properties: {
       theme: {
         type: String,
-        value: 'ace/theme/eclipse'
+        value: 'ace/theme/eclipse',
+        observer: "themeChanged"
       },
       mode: {
         type: String,
         notify: true,
+        observer: "modeChanged"
       },
       value: {
         type: String,
@@ -47,23 +49,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       },
       readonly: {
         type: Boolean,
-        value: false
+        value: false,
+        observer: "readonlyChanged"
       },
       softtabs: {
         type: Boolean,
-        value: true
+        value: true,
+        observer: "softtabsChanged"
       },
       wrap: {
         type: Boolean,
-        value: false
+        value: false,
+        observer: "wrapChanged"
       },
       fontSize: {
         type: String,
-        value: "14px"
+        value: "14px",
+        observer: "fontSizeChanged"
       },
       tabSize: {
         type: Number,
-        value: 4
+        value: 4,
+        observer: "tabSizeChanged"
       },
       snippets: {
         type: String,
@@ -127,6 +134,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       editor.setTheme(this.theme);
 
       editor.focus();
+
+      // Forcing a xyzChanged() call, because the initial one din't do anything as editor wasn't created yet
       this.readonlyChanged();
       this.wrapChanged();
       this.tabSizeChanged();
@@ -138,6 +147,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       // Trying to get content as HTML content
       var htmlContent = Polymer.dom(this).innerHTML.trim();
+      // console.debug("[ace-widget] HTML content found", htmlContent);
+
       // If we have a value in the `value` attribute, we keep it, else we use the HTML content
       if (this.value === undefined) {
         this.value = htmlContent;
@@ -172,15 +183,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       langTools.addCompleter(aceWidgetCompleter);
     },
     fontSizeChanged: function () {
+      if (this.editor == undefined) {
+        return;
+      }
       this.$.editor.style.fontSize = this.fontSize;
     },
     modeChanged: function () {
+      if (this.editor == undefined) {
+        return;
+      }
       this.editor.getSession().setMode(this.mode);
     },
     softtabsChanged: function () {
+      if (this.editor == undefined) {
+        return;
+      }
       this.editor.getSession().setUseSoftTabs(this.softtabs);
     },
     themeChanged: function () {
+      if (this.editor == undefined) {
+        return;
+      }
       this.editor.setTheme(this.theme);
       return;
 
@@ -205,25 +228,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     },
     valueChanged: function () {
-      if (this.editor != undefined) {
-        // console.debug("[ace-widget] valueChanged", this.value)
-        this.editorValue = this.value;
-        this.editor.clearSelection();
-        this.editor.resize();
-        this.editor.focus();
+      if (this.editor == undefined) {
+        return;
       }
-
+      this.editorValue = this.value;
+      this.editor.clearSelection();
+      this.editor.resize();
+      this.editor.focus();
     },
     readonlyChanged: function () {
+      if (this.editor == undefined) {
+        return;
+      }
       this.editor.setReadOnly(this.readonly);
       this.editor.setHighlightActiveLine(!this.readonly);
       this.editor.setHighlightGutterLine(!this.readonly);
       this.editor.renderer.$cursorLayer.element.style.opacity = this.readonly ? 0 : 1;
     },
     wrapChanged: function () {
+      if (this.editor == undefined) {
+        return;
+      }
       this.editor.getSession().setUseWrapMode(this.wrap);
     },
     tabSizeChanged: function () {
+      if (this.editor == undefined) {
+        return;
+      }
       if (this.tabSize) {
         this.editor.getSession().setTabSize(this.tabSize);
       }
