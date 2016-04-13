@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   #editor {
     border: 1px solid #e3e3e3;
     border-radius: 4px;
+    @apply(--ace-widget-editor);
   }
 </style>
 <template>
@@ -40,7 +41,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       mode: {
         type: String,
         notify: true,
+<<<<<<< HEAD
         observer: "modeChanged"
+=======
+        observer: 'modeChanged'
+>>>>>>> e06f0c9fcf3e080bd3bb885224ef8acd062f81f8
       },
       value: {
         type: String,
@@ -189,9 +194,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       this.$.editor.style.fontSize = this.fontSize;
     },
     modeChanged: function () {
+<<<<<<< HEAD
       if (this.editor == undefined) {
         return;
       }
+=======
+      if (!this.editor) return;
+>>>>>>> e06f0c9fcf3e080bd3bb885224ef8acd062f81f8
       this.editor.getSession().setMode(this.mode);
     },
     softtabsChanged: function () {
