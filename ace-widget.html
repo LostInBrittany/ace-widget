@@ -41,11 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       mode: {
         type: String,
         notify: true,
-<<<<<<< HEAD
         observer: "modeChanged"
-=======
-        observer: 'modeChanged'
->>>>>>> e06f0c9fcf3e080bd3bb885224ef8acd062f81f8
       },
       value: {
         type: String,
@@ -100,6 +96,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       enableSnippets: {
         type: Boolean,
         value: false
+      },
+      initialFocus: {
+        type: Boolean,
+        value: false
       }
 
     },
@@ -136,9 +136,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       this.session = editor.getSession();
 
-      editor.setTheme(this.theme);
+      if (this.initialFocus) {
+        editor.focus();
+      }
 
-      editor.focus();
+      editor.setTheme(this.theme);
 
       // Forcing a xyzChanged() call, because the initial one din't do anything as editor wasn't created yet
       this.readonlyChanged();
@@ -186,6 +188,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       };
       langTools.addCompleter(aceWidgetCompleter);
+
     },
     fontSizeChanged: function () {
       if (this.editor == undefined) {
@@ -194,13 +197,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       this.$.editor.style.fontSize = this.fontSize;
     },
     modeChanged: function () {
-<<<<<<< HEAD
-      if (this.editor == undefined) {
-        return;
-      }
-=======
       if (!this.editor) return;
->>>>>>> e06f0c9fcf3e080bd3bb885224ef8acd062f81f8
       this.editor.getSession().setMode(this.mode);
     },
     softtabsChanged: function () {
@@ -243,7 +240,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       this.editorValue = this.value;
       this.editor.clearSelection();
       this.editor.resize();
-      this.editor.focus();
     },
     readonlyChanged: function () {
       if (this.editor == undefined) {
