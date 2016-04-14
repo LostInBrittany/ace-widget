@@ -128,6 +128,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
       this.themeChanged();
       ace.config.set('basePath', this.resolveUrl('../ace-builds/src-min-noconflict/'));
+      this.editorValue = "";
       editor.setOption('enableSnippets', this.enableSnippets);
       editor.setOption('enableBasicAutocompletion', true);
       editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
@@ -188,6 +189,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         }
       };
       langTools.addCompleter(aceWidgetCompleter);
+
+      console.debug("[ace-widget] After initializing: editor.getSession().getValue()", editor.getSession().getValue());
 
     },
     fontSizeChanged: function () {
