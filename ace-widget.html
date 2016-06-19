@@ -237,12 +237,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
     },
     valueChanged: function () {
+      // console.debug("[ace-widget] valueChanged - ",this.value)
       if (this.editor == undefined) {
         return;
       }
-      this.editorValue = this.value;
-      this.editor.clearSelection();
-      this.editor.resize();
+      if (this.editorValue != this.value) {
+        this.editorValue = this.value;
+        this.editor.clearSelection();
+        this.editor.resize();        
+      }
     },
     readonlyChanged: function () {
       if (this.editor == undefined) {
