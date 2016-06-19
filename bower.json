@@ -17,15 +17,15 @@
   "ignore": [
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#~1.2.0",
+    "polymer": "Polymer/polymer#~1.5.0",
     "ace-builds": "~1.2.0"
   },
   "devDependencies": {
     "bootstrap": "~3.3.2",
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "paper-styles": "PolymerElements/paper-styles#^1.0.0",
-    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
-    "web-component-tester": "^4.0.0"
+    "iron-component-page": "PolymerElements/iron-component-page#^1.1.6",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.2.3",
+    "paper-styles": "PolymerElements/paper-styles#^1.1.4",
+    "test-fixture": "PolymerElements/test-fixture#^1.1.1",
+    "web-component-tester": "^4.3.0"
   }
 }
