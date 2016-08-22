@@ -7,7 +7,7 @@
 > Based on [pjako's fork](https://github.com/pjako/ace-element)
 > of [PolymerLabs ace-element](https://github.com/PolymerLabs/ace-element).
 >
-> Polymer 1.2 ready
+> Polymer 1.5 ready
 
 
 ## Install
@@ -39,6 +39,19 @@ Or [download as ZIP](https://github.com/LostInBrittany/ace-widget/archive/gh-pag
     ```html
     <ace-widget>Editable code here</ace-widget>
     ```
+
+### Note on ShadowDOM
+
+The new tools from the Polymer team, like [Polymer CLI](https://github.com/Polymer/polymer-cli) use the true *shadow-dom* instead of *shady-dom*, by means of the setup of Polymer options:
+
+```
+    // setup Polymer options
+    window.Polymer = {lazyRegister: true, dom: 'shadow'};
+```
+
+Ace editor isn't currently not compatible with ShadowDOM, as it creates global styles that doesn't pass the ShadowDOM border.
+In order to make **ace-widget** work, I've taken inspiration from the [ace-shim-about-shadow-dom project](https://github.com/valaxy/ace-shim-about-shadow-dom/) and made a Polymer behavior that detects if an application using **ace-widget** is in ShadowDOM mode, and if it is, it copies Ace editor's styles into the component ShadowDOM.
+
 
 ## Attributes
 

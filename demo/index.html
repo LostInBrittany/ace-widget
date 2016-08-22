@@ -18,11 +18,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
 
-    <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.css" />
-    <script src="../../jquery/dist/jquery.js"></script>
-    <script src="../../bootstrap/dist/js/bootstrap.js"></script>
+    <script>
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+      // setup Polymer options
+      window.Polymer = {lazyRegister: true, dom: 'shadow'};
+
+      // load webcomponents polyfills
+      (function() {
+        if ('registerElement' in document
+            && 'import' in document.createElement('link')
+            && 'content' in document.createElement('template')) {
+          // browser has web components
+        } else {
+          // polyfill web components
+          var e = document.createElement('script');
+          e.src = '../webcomponentsjs/webcomponents-lite.min.js';
+          document.head.appendChild(e);
+        }
+      })();
+
+
+    </script>
     <link   rel="import" href="../../polymer/polymer.html">
 
 
