@@ -90,6 +90,7 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
           this._hookDom();
           this._getStyle();
           this._hookEditor();
+          this._fixStyle();
         }
       }, 
 
@@ -119,7 +120,6 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
           if (doc === docHook) {
             var index = 0, sheets;
             doc = docHook.cssHead || document;
-
             if (doc.createStyleSheet && (sheets = doc.styleSheets)) {
                 while (index < sheets.length)
                     if (sheets[index++].owningElement.id === id) return true;
@@ -149,7 +149,7 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
 
         this._styles = [style1, style2, style3];
         this._styles.forEach(function (style) {
-          // style.parentNode.removeChild(style)
+         //  style.parentNode.removeChild(style)
         });      
       },
       _hookEditor: function() {
@@ -166,8 +166,9 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
         this._fixStyle();
       },
       _fixStyle: function() {
-        this._styles.forEach(function (style) {
-          Polymer.dom(this.root).appendChild(style.cloneNode(true));
+        var root = this.root
+        this._styles.forEach(function (style) { 
+          Polymer.dom(root).appendChild(style.cloneNode(true));
         })      
       }
     };
