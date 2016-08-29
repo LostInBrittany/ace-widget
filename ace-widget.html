@@ -294,7 +294,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       focus: function () {
         this.editor.focus();
       },
-      _updatePlaceholder() {
+      _updatePlaceholder: function() {
         var shouldShow = !this.editor.session.getValue().length;
         var node = this.editor.renderer.emptyMessageNode;
         console.debug("[ace-widget] _updatePlaceholder", {shouldShow: shouldShow, node: node});
