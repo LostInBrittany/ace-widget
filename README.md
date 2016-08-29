@@ -55,7 +55,7 @@ In order to make **ace-widget** work, I've taken inspiration from the [ace-shim-
 
 ## Attributes
 
-Attribute     | Options   | Default | Description
+Attribute     | Type      | Default | Description
 ---           | ---       | ---     | ---
 `theme`       | *String*  | ``      | `Editor#setTheme` at [Ace API](http://ace.c9.io/#nav=api&api=editor)
 `mode`        | *String*  | ``      | `EditSession#setMode` at [Ace API](http://ace.c9.io/#nav=api&api=edit_session)
@@ -68,6 +68,7 @@ Attribute     | Options   | Default | Description
 `minlines`    | *Number*  | 15      | `Editor.setOptions({minlines: minlines})`
 `maxlines`    | *Number*  | 30      | `Editor.setOptions({minlines: maxlines})`
 `initialFocus`| *Boolean* | ``      | If true, `Editor.focus()` is called upon initialisation
+`placeholder` | *String*  | ``      | A placeholder text to show when the editor is empty
 
 ## Properties
 

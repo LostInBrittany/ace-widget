@@ -25,7 +25,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       border: 1px solid #e3e3e3;
       border-radius: 4px;
     }
-
   </style>
   <template>
     <div id="editor"></div>
@@ -102,8 +101,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         initialFocus: {
           type: Boolean,
           value: false
-        }
-
+        },
+        placeholder: {
+          type: String,
+          value: ""
+        },
       },
       behaviors: [
         AceWidgetShadowDom
@@ -140,7 +142,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
 
         editor.on('change', this.editorChangeAction.bind(this));
-
+        editor.on('input', this._updatePlaceholder.bind(this));        
+        setTimeout(this._updatePlaceholder.bind(this), 100);
         this.session = editor.getSession();
 
         if (this.initialFocus) {
@@ -290,7 +293,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       },
       focus: function () {
         this.editor.focus();
-      }
+      },
+      _updatePlaceholder() {
+        var shouldShow = !this.editor.session.getValue().length;
+        var node = this.editor.renderer.emptyMessageNode;
+        console.debug("[ace-widget] _updatePlaceholder", {shouldShow: shouldShow, node: node});
+        if (!shouldShow && node) {
+            this.editor.renderer.scroller.removeChild(this.editor.renderer.emptyMessageNode);
+            this.editor.renderer.emptyMessageNode = null;
+        } else if (shouldShow && !node) {
+            console.debug("[ace-widget] _updatePlaceholder - shouldShow && !node");
+            node = this.editor.renderer.emptyMessageNode = document.createElement("div");
+            node.textContent = this.placeholder;
+            node.className = "ace_comment";
+            node.style.padding = "0 9px";
+            node.style.zIndex = "1";
+            node.style.position = "absolute";
+            node.style.color = "#aaa";
+            console.debug("[ace-widget] _updatePlaceholder - node", node);
+            this.editor.renderer.scroller.appendChild(node);
+        }
+      },
     })
   </script>
 
