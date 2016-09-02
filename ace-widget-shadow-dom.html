@@ -85,8 +85,8 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
       },
 
       init: function() {
-        if (window.Polymer.Settings.dom === 'shadow') {
-          aceShadowRoots.push(this.root);
+        if (window.Polymer.Settings.dom === 'shadow') {          
+          aceShadowRoots.push(Polymer.dom(this.root));
           this._hookDom();
           this._getStyle();
           this._hookEditor();
@@ -133,7 +133,7 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
           }
           return dom.hasCssString(id, doc);
         }
-        this._domHook.importCssString = function (cssText, id, doc) {
+        this._domHook.importCssString = function (cssText, id, doc) { 
           var result
 			    aceShadowRoots.forEach(function (cssHead) {
 				    docHook.cssHead = cssHead
