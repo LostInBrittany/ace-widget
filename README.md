@@ -9,6 +9,9 @@
 >
 > Polymer 1.5 ready
 
+## Doc and demo
+
+https://lostinbrittany.github.io/ace-widget/
 
 ## Install
 
