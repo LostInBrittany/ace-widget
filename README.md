@@ -1,3 +1,5 @@
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/LostInBrittany/ace-widget)
+
 # ace-widget #
 
 > Even <strong>more</strong> embeddable code editor
@@ -13,6 +15,26 @@
 
 https://lostinbrittany.github.io/ace-widget/
 
+
+## Usage example
+
+<!---
+```
+<custom-element-demo>
+  <template>
+    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="ace-widget.html">
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+  <ace-widget placeholder="Write something... Anything..." initial-focus>
+  </ace-widget>
+```
+
+
 ## Install
 
 Install the component using [Bower](http://bower.io/):
@@ -22,6 +44,7 @@ $ bower install LostInBrittany/ace-widget --save
 ```
 
 Or [download as ZIP](https://github.com/LostInBrittany/ace-widget/archive/gh-pages.zip).
+
 
 ## Usage
 
