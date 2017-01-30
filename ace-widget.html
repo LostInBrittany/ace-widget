@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     #editor {
       border: 1px solid #e3e3e3;
       border-radius: 4px;
+      @apply(--ace-widget-editor);
     }
   </style>
   <template>
@@ -112,7 +113,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         AceWidgetShadowDom
       ],
       ready: function () {
-        // console.debug("[ace-widget] ready")
+
+      },
+      attached: function () {
+        // console.debug("[ace-widget] attached")
         var self = this;
         var div = this.$.editor;
         div.style.width = '100%';
@@ -121,9 +125,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         this.init();
 
         this.fire('editor-ready', {value: this.editor, oldValue: null});
-
-      },
-      attached: function () {
         // console.debug("[ace-widget] attached")
         this.initializeEditor();
       },
