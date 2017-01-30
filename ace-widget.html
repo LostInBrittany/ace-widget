@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 <script src="../ace-builds/src-noconflict/ext-language_tools.js"></script>
 <script src="../ace-builds/src-noconflict/snippets/snippets.js"></script>
+<link   rel="import" href="../polymer/polymer.html">
 <link   rel="import" href="./ace-widget-shadow-dom.html">
 
 <dom-module id="ace-widget">
@@ -118,13 +119,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         div.style.height = '100%';
         this.editor = ace.edit(div);
         this.init();
-  
+
         this.fire('editor-ready', {value: this.editor, oldValue: null});
 
       },
       attached: function () {
         // console.debug("[ace-widget] attached")
-        this.initializeEditor();      
+        this.initializeEditor();
       },
 
       initializeEditor: function () {
@@ -142,7 +143,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
 
         editor.on('change', this.editorChangeAction.bind(this));
-        editor.on('input', this._updatePlaceholder.bind(this));        
+        editor.on('input', this._updatePlaceholder.bind(this));
         setTimeout(this._updatePlaceholder.bind(this), 100);
         this.session = editor.getSession();
 
@@ -253,7 +254,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (this.editorValue != this.value) {
           this.editorValue = this.value;
           this.editor.clearSelection();
-          this.editor.resize();        
+          this.editor.resize();
         }
       },
       readonlyChanged: function () {
