@@ -20,7 +20,8 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
         },
       },
 
-      init: function() { console.log("Shadow", window.Polymer.Settings)       
+      init: function() { 
+        // console.log("Shadow", window.Polymer.Settings)       
         if (window.Polymer.Settings.dom === 'shadow' || window.Polymer.Settings.useShadow ) {        
           aceShadowRoots.push(Polymer.dom(this.root));
           this._hookDom();
