@@ -108,6 +108,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           type: String,
           value: ""
         },
+        verbose: {
+          type: Boolean,
+          value: false
+        }
       },
       behaviors: [
         AceWidgetShadowDom
@@ -201,7 +205,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         };
         langTools.addCompleter(aceWidgetCompleter);
 
-        console.debug("[ace-widget] After initializing: editor.getSession().getValue()", editor.getSession().getValue());
+        if (this.verbose)
+            console.debug("[ace-widget] After initializing: editor.getSession().getValue()", editor.getSession().getValue());
 
       },
       fontSizeChanged: function () {
@@ -299,12 +304,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       _updatePlaceholder: function() {
         var shouldShow = !this.editor.session.getValue().length;
         var node = this.editor.renderer.emptyMessageNode;
-        console.debug("[ace-widget] _updatePlaceholder", {shouldShow: shouldShow, node: node});
+        if (this.verbose)
+            console.debug("[ace-widget] _updatePlaceholder", {shouldShow: shouldShow, node: node});
         if (!shouldShow && node) {
             this.editor.renderer.scroller.removeChild(this.editor.renderer.emptyMessageNode);
             this.editor.renderer.emptyMessageNode = null;
         } else if (shouldShow && !node) {
-            console.debug("[ace-widget] _updatePlaceholder - shouldShow && !node");
+            if (this.verbose)
+                console.debug("[ace-widget] _updatePlaceholder - shouldShow && !node");
             node = this.editor.renderer.emptyMessageNode = document.createElement("div");
             node.textContent = this.placeholder;
             node.className = "ace_comment";
@@ -312,7 +319,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             node.style.zIndex = "1";
             node.style.position = "absolute";
             node.style.color = "#aaa";
-            console.debug("[ace-widget] _updatePlaceholder - node", node);
+            if (this.verbose)
+                console.debug("[ace-widget] _updatePlaceholder - node", node);
             this.editor.renderer.scroller.appendChild(node);
         }
       },

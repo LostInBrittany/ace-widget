@@ -100,6 +100,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           </ace-widget>
         </template>
       </demo-snippet>
+
+
+      <h3>ace-widget with some options and JavaScript mode</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+
+          <ace-widget
+            mode="ace/mode/javascript"   
+            theme="ace/theme/ambiance" 
+            softtabs="true" 
+            wrap="true">
+for (var i=0; i<10; i++) {
+  console.log("Hello "+i);
+}
+          </ace-widget>
+        </template>
+      </demo-snippet>
+
+      <h3>ace-widget with some options and JavaScript mode with live auto-completion</h3>
+      <demo-snippet class="centered-demo">
+        <template>
+
+          <ace-widget
+            mode="ace/mode/javascript"   
+            theme="ace/theme/ambiance" 
+            softtabs="true" 
+            wrap="true"
+            enable-live-autocompletion>
+for (var i=0; i<10; i++) {
+  console.log("Hello "+i);
+}
+          </ace-widget>
+        </template>
+      </demo-snippet>
+
+
     </div>
   </body>
 </html>
