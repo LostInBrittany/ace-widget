@@ -6,70 +6,6 @@ Inspired by [ace-shim-about-shadow-dom project](https://github.com/valaxy/ace-sh
 A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM mode, it copies ace-editor's styles into the component ShadowDOM.
 -->
 <script>
-  /* 
-   * Quick fix for Polymer bug #3840, 
-   * while waiting for official correction.
-   * https://github.com/Polymer/polymer/issues/3840
-   */
-  (function(){
-    var matchesSelector = Polymer.DomApi.matchesSelector;
-    var styleUtil = Polymer.StyleUtil;
-    var styleTransformer = Polymer.StyleTransformer;
-    var IS_IE = navigator.userAgent.match('Trident');
-    var settings = Polymer.Settings;
-    Polymer.StyleProperties.whenHostOrRootRule = function(scope, rule, style, callback) {
-        if (!rule.propertyInfo) {
-          this.decorateRule(rule);
-        }
-        if (!rule.propertyInfo.properties) {
-          return;
-        }
-        var hostScope = scope.is ?
-        styleTransformer._calcHostScope(scope.is, scope.extends) :
-        'html';
-        var parsedSelector = rule.parsedSelector;
-        var isRoot = parsedSelector === ':root';
-        var isHost = parsedSelector.indexOf(':host') === 0;
-        // build info is either in scope (when scope is an element) or in the style
-        // when scope is the default scope; note: this allows default scope to have
-        // mixed mode built and unbuilt styles.
-        var cssBuild = scope.__cssBuild || style.__cssBuild;
-        if (cssBuild === 'shady') {
-          // :root -> x-foo > *.x-foo for elements and html for custom-style
-          isRoot = parsedSelector === (hostScope + ' > *.' + hostScope) || parsedSelector.indexOf('html') !== -1;
-          // :host -> x-foo for elements, but sub-rules have .x-foo in them
-          isHost = !isRoot && parsedSelector.indexOf(hostScope) === 0;
-        }
-        if (cssBuild === 'shadow') {
-          isRoot = parsedSelector === ':host > *' || parsedSelector === 'html';
-          isHost = isHost && !isRoot;
-        }
-        if (!isRoot && !isHost) {
-          return;
-        }
-        var selectorToMatch = hostScope;
-        if (isHost) {
-          // need to transform :host under ShadowDOM because `:host` does not work with `matches`
-          if (settings.useNativeShadow && !rule.transformedSelector) {
-            // transform :host into a matchable selector
-            rule.transformedSelector =
-            styleTransformer._transformRuleCss(
-              rule,
-              styleTransformer._transformComplexSelector,
-              scope.is,
-              hostScope
-            );
-          }
-          // parsedSelector fallback for 'shady' css build
-          selectorToMatch = rule.transformedSelector || rule.parsedSelector;
-        }
-        callback({
-          selector: selectorToMatch,
-          isHost: isHost,
-          isRoot: isRoot
-        });
-      };
-    })();
 
   AceWidgetShadowDom = (function(){
     var aceShadowRoots = [];
@@ -84,8 +20,8 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
         },
       },
 
-      init: function() {
-        if (window.Polymer.Settings.dom === 'shadow') {          
+      init: function() { console.log("Shadow", window.Polymer.Settings)       
+        if (window.Polymer.Settings.dom === 'shadow' || window.Polymer.Settings.useShadow ) {        
           aceShadowRoots.push(Polymer.dom(this.root));
           this._hookDom();
           this._getStyle();
