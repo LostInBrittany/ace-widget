@@ -16,19 +16,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <link   rel="import" href="./ace-widget-shadow-dom.html">
 
 <dom-module id="ace-widget">
-  <style>
-    :host {
-      display: block;
-      width: 100%;
-    }
-
-    #editor {
-      border: 1px solid #e3e3e3;
-      border-radius: 4px;
-      @apply(--ace-widget-editor);
-    }
-  </style>
   <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+      }
+  
+      #editor {
+        border: 1px solid #e3e3e3;
+        border-radius: 4px;
+        @apply --ace-widget-editor;
+      }
+    </style>
     <div id="editor"></div>
   </template>
 
