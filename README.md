@@ -9,7 +9,8 @@
 > Based on [pjako's fork](https://github.com/pjako/ace-element)
 > of [PolymerLabs ace-element](https://github.com/PolymerLabs/ace-element).
 >
-> Polymer 1.5 ready
+> Hybrid Polymer element, 1.x-2.x ready
+
 
 ## Doc and demo
 
