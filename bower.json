@@ -50,5 +50,8 @@
         "webcomponentsjs": "^0.7"
       }
     }
+  },
+  "demos": {
+    "demo": "demo/index.html"
   }
 }
