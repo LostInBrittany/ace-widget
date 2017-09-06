@@ -160,6 +160,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (this.initialFocus) {
           editor.focus();
         }
+        
+        editor.$blockScrolling = Infinity;
 
         editor.setTheme(this.theme);
 
@@ -299,6 +301,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return this.editor.getValue();
       },
       set editorValue(value) {
+        if (value === undefined) {
+          return;
+        }
         this._value = value;
         this.editor.setValue(value);
         // console.debug("[ace-widget] set editorValue", this.editorValue)
