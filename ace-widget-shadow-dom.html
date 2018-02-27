@@ -105,7 +105,9 @@ A behavior to allow ace-edit to work under ShadowDom. If the app is in ShadowDOM
       _fixStyle: function() {
         var root = this.root
         this._styles.forEach(function (style) { 
-          Polymer.dom(root).appendChild(style.cloneNode(true));
+	  if(style) {
+            Polymer.dom(root).appendChild(style.cloneNode(true));
+	  }
         })      
       }
     };
