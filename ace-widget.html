@@ -38,95 +38,95 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   </template>
 
   <script>
+    /* global ace, AceWidgetShadowDom */
     Polymer({
       is: 'ace-widget',
       properties: {
         theme: {
           type: String,
           value: 'ace/theme/eclipse',
-          observer: "themeChanged"
+          observer: 'themeChanged',
         },
         mode: {
           type: String,
           notify: true,
-          observer: "modeChanged"
+          observer: 'modeChanged',
         },
         value: {
           type: String,
           notify: true,
-          observer: "valueChanged"
+          observer: 'valueChanged',
         },
         readonly: {
           type: Boolean,
           value: false,
-          observer: "readonlyChanged"
+          observer: 'readonlyChanged',
         },
         softtabs: {
           type: Boolean,
           value: true,
-          observer: "softtabsChanged"
+          observer: 'softtabsChanged',
         },
         wrap: {
           type: Boolean,
           value: false,
-          observer: "wrapChanged"
+          observer: 'wrapChanged',
         },
         fontSize: {
           type: String,
-          value: "14px",
-          observer: "fontSizeChanged"
+          value: '14px',
+          observer: 'fontSizeChanged',
         },
         tabSize: {
           type: Number,
           value: 4,
-          observer: "tabSizeChanged"
+          observer: 'tabSizeChanged',
         },
         snippets: {
           type: String,
-          notify: true
+          notify: true,
         },
         autoComplete: {
           type: Object,
-          notify: true
+          notify: true,
         },
         minlines: {
           type: Number,
-          value: 15
+          value: 15,
         },
         maxlines: {
           type: Number,
-          value: 30
+          value: 30,
         },
         enableLiveAutocompletion: {
           type: Boolean,
-          value: false
+          value: false,
         },
         enableSnippets: {
           type: Boolean,
-          value: false
+          value: false,
         },
         initialFocus: {
           type: Boolean,
-          value: false
+          value: false,
         },
         placeholder: {
           type: String,
-          value: ""
+          value: '',
         },
         verbose: {
           type: Boolean,
-          value: false
-        }
+          value: false,
+        },
       },
       behaviors: [
-        AceWidgetShadowDom
+        AceWidgetShadowDom,
       ],
-      ready: function () {
+      ready: function() {
 
       },
-      attached: function () {
+      attached: function() {
         // console.debug("[ace-widget] attached")
-        var self = this;
         var div = this.$.editor;
         div.style.width = '100%';
         div.style.height = '100%';
@@ -138,8 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         this.initializeEditor();
       },
 
-      initializeEditor: function () {
-
+      initializeEditor: function() {
         var self = this;
         var editor = this.editor;
 
@@ -147,7 +146,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         ace.config.set('basePath', this.resolveUrl('../ace-builds/src-min-noconflict/'));
         this.themeChanged();
-        this.editorValue = "";
+        this.editorValue = '';
         editor.setOption('enableSnippets', this.enableSnippets);
         editor.setOption('enableBasicAutocompletion', true);
         editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
@@ -160,7 +159,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if (this.initialFocus) {
           editor.focus();
         }
-        
+    
         editor.$blockScrolling = Infinity;
 
         editor.setTheme(this.theme);
@@ -190,17 +189,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         // min and max lines
         editor.setOptions({
             minLines: this.minlines,
-            maxLines: this.maxlines
+            maxLines: this.maxlines,
         });
 
         // snippets
         if (this.enableSnippets) {
-          var snippetManager = ace.require("ace/snippets").snippetManager;
+          var snippetManager = ace.require('ace/snippets').snippetManager;
           snippetManager.register(this.snippets, 'javascript');
         }
         // autoComplete
-        var langTools = ace.require("ace/ext/language_tools");
-        var self = this;
+        var langTools = ace.require('ace/ext/language_tools');
         var aceWidgetCompleter = {
           getCompletions: function(editor, session, pos, prefix, callback) {
             if (prefix.length === 0) {
@@ -208,58 +206,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
               return;
             }
             callback(null, self.autoComplete || []);
-          }
+          },
         };
         langTools.addCompleter(aceWidgetCompleter);
 
-        if (this.verbose)
-            console.debug("[ace-widget] After initializing: editor.getSession().getValue()", editor.getSession().getValue());
-
+        if (this.verbose) {
+          console.debug('[ace-widget] After initializing: editor.getSession().getValue()',
+              editor.getSession().getValue());
+        }
       },
-      fontSizeChanged: function () {
+      fontSizeChanged: function() {
         if (this.editor == undefined) {
           return;
         }
         this.$.editor.style.fontSize = this.fontSize;
       },
-      modeChanged: function () {
+      modeChanged: function() {
         if (!this.editor) return;
         this.editor.getSession().setMode(this.mode);
       },
-      softtabsChanged: function () {
+      softtabsChanged: function() {
         if (this.editor == undefined) {
           return;
         }
         this.editor.getSession().setUseSoftTabs(this.softtabs);
       },
-      themeChanged: function () {
+      themeChanged: function() {
         if (this.editor == undefined) {
           return;
         }
         this.editor.setTheme(this.theme);
         return;
-
-        this._whenMatches(document.head, '#ace-' + this.theme, 'applyTheme');
       },
-      _whenMatches: function (node, selector, method) {
-        var m = node.querySelector(selector);
-        if (m) {
-          if (this[method]) {
-            this[method].call(this, m);
-          }
-        } else {
-          var cb = this._whenMatches.bind(this, node, selector, method);
-          this.onMutation(node, cb);
-        }
-      },
-      applyTheme: function (style) {
-        if (style) {
-          this.appendChild(cloneStyle(style));
-        } else {
-
-        }
-      },
-      valueChanged: function () {
+      valueChanged: function() {
         // console.debug("[ace-widget] valueChanged - ",this.value)
         if (this.editor == undefined) {
           return;
@@ -270,7 +249,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           this.editor.resize();
         }
       },
-      readonlyChanged: function () {
+      readonlyChanged: function() {
         if (this.editor == undefined) {
           return;
         }
@@ -279,13 +258,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         this.editor.setHighlightGutterLine(!this.readonly);
         this.editor.renderer.$cursorLayer.element.style.opacity = this.readonly ? 0 : 1;
       },
-      wrapChanged: function () {
+      wrapChanged: function() {
         if (this.editor == undefined) {
           return;
         }
         this.editor.getSession().setUseWrapMode(this.wrap);
       },
-      tabSizeChanged: function () {
+      tabSizeChanged: function() {
         if (this.editor == undefined) {
           return;
         }
@@ -293,7 +272,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           this.editor.getSession().setTabSize(this.tabSize);
         }
       },
-      editorChangeAction: function () {
+      editorChangeAction: function() {
         // console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
         this.fire('editor-content', {value: this.editorValue, oldValue: this._value});
       },
@@ -308,33 +287,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         this.editor.setValue(value);
         // console.debug("[ace-widget] set editorValue", this.editorValue)
       },
-      focus: function () {
+      focus: function() {
         this.editor.focus();
       },
       _updatePlaceholder: function() {
         var shouldShow = !this.editor.session.getValue().length;
         var node = this.editor.renderer.emptyMessageNode;
-        if (this.verbose)
-            console.debug("[ace-widget] _updatePlaceholder", {shouldShow: shouldShow, node: node});
+        if (this.verbose) {
+          console.debug('[ace-widget] _updatePlaceholder', {shouldShow: shouldShow, node: node});
+        }
         if (!shouldShow && node) {
             this.editor.renderer.scroller.removeChild(this.editor.renderer.emptyMessageNode);
             this.editor.renderer.emptyMessageNode = null;
         } else if (shouldShow && !node) {
-            if (this.verbose)
-                console.debug("[ace-widget] _updatePlaceholder - shouldShow && !node");
-            node = this.editor.renderer.emptyMessageNode = document.createElement("div");
+            if (this.verbose) {
+              console.debug('[ace-widget] _updatePlaceholder - shouldShow && !node');
+            }
+            node = this.editor.renderer.emptyMessageNode = document.createElement('div');
             node.textContent = this.placeholder;
-            node.className = "ace_comment";
-            node.style.padding = "0 9px";
-            node.style.zIndex = "1";
-            node.style.position = "absolute";
-            node.style.color = "#aaa";
-            if (this.verbose)
-                console.debug("[ace-widget] _updatePlaceholder - node", node);
+            node.className = 'ace_comment';
+            node.style.padding = '0 9px';
+            node.style.zIndex = '1';
+            node.style.position = 'absolute';
+            node.style.color = '#aaa';
+            if (this.verbose) {
+              console.debug('[ace-widget] _updatePlaceholder - node', node);
+            }
             this.editor.renderer.scroller.appendChild(node);
         }
       },
-    })
+    });
   </script>
 
 </dom-module>
