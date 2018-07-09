@@ -39,103 +39,113 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
     </script>
-    <link   rel="import" href="../../polymer/polymer.html">
+    <script type="module" src="../../@polymer/polymer/polymer-legacy.js"></script>
 
 
-    <link rel="import" href="../../paper-styles/color.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-icons/iron-icons.html">
+    <script type="module" src="../../@polymer/paper-styles/color.js"></script>
+    <script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+    <script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+    <script type="module" src="../../@polymer/iron-icons/iron-icons.js"></script>
 
-    <link   rel="import" href="../../ace-widget/ace-widget.html">
+    <script type="module" src="../ace-widget.js"></script>
 
-    <style is="custom-style" include="demo-pages-shared-styles">
-      .spacer-10 { width:100%; height:10px; }
-      .spacer-50 { width:100%; height:50px; }
-      .vertical-section-container {
-        max-width: 550px;
-      }
-    </style>
+    <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+      const $_documentContainer = document.createElement('template');
+      $_documentContainer.setAttribute('style', 'display: none;');
+
+      $_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
+            .spacer-10 { width:100%; height:10px; }
+            .spacer-50 { width:100%; height:50px; }
+            .vertical-section-container {
+              max-width: 550px;
+            }
+          </style>`;
+
+      document.head.appendChild($_documentContainer.content);
+    </script>
   </head>
 
   <body unresolved>
-    <div class="vertical-section-container centered">
 
-      <h3>ace-widget with empty content and intitial focus</h3>
-      <demo-snippet class="centered-demo">
-        <template>
-          <ace-widget placeholder="Write something... Anything..." initial-focus>
+    
+    <script type="module">
+      const $_documentContainer = document.createElement('template');
 
+      $_documentContainer.innerHTML = `<div class="vertical-section-container centered">
 
-          </ace-widget>
-        </template>
-      </demo-snippet>
-
-      <h3>ace-widget with content coming from HTML content</h3>
-      <demo-snippet class="centered-demo">
-        <template>
-
-          <ace-widget>
-            This is a nice widget
-          </ace-widget>
-        </template>
-      </demo-snippet>
+            <h3>ace-widget with empty content and intitial focus</h3>
+            <demo-snippet class="centered-demo">
+              <template>
+                <ace-widget placeholder="Write something... Anything..." initial-focus="">
 
 
-      <h3>ace-widget with content coming from `value` attribute</h3>
-      <demo-snippet class="centered-demo">
-        <template>
+                </ace-widget>
+              </template>
+            </demo-snippet>
 
-          <ace-widget   theme="ace/theme/eclipse" softtabs="true" wrap="true" value="This is a nice widget">
-          </ace-widget>
-        </template>
-      </demo-snippet>
+            <h3>ace-widget with content coming from HTML content</h3>
+            <demo-snippet class="centered-demo">
+              <template>
 
-      <h3>ace-widget with some options (theme, softtabs, wrap)</h3>
-      <demo-snippet class="centered-demo">
-        <template>
-
-          <ace-widget   theme="ace/theme/ambiance" softtabs="true" wrap="true">
-            This is a nice widget... and we are writing a long text here to show the effets of the `wrap` attribute.
-          </ace-widget>
-        </template>
-      </demo-snippet>
+                <ace-widget>
+                  This is a nice widget
+                </ace-widget>
+              </template>
+            </demo-snippet>
 
 
-      <h3>ace-widget with some options and JavaScript mode</h3>
-      <demo-snippet class="centered-demo">
-        <template>
+            <h3>ace-widget with content coming from \`value\` attribute</h3>
+            <demo-snippet class="centered-demo">
+              <template>
 
-          <ace-widget
-            mode="ace/mode/javascript"   
-            theme="ace/theme/ambiance" 
-            softtabs="true" 
-            wrap="true">
-for (var i=0; i<10; i++) {
-  console.log("Hello "+i);
-}
-          </ace-widget>
-        </template>
-      </demo-snippet>
+                <ace-widget theme="ace/theme/eclipse" softtabs="true" wrap="true" value="This is a nice widget">
+                </ace-widget>
+              </template>
+            </demo-snippet>
 
-      <h3>ace-widget with some options and JavaScript mode with live auto-completion</h3>
-      <demo-snippet class="centered-demo">
-        <template>
+            <h3>ace-widget with some options (theme, softtabs, wrap)</h3>
+            <demo-snippet class="centered-demo">
+              <template>
 
-          <ace-widget
-            mode="ace/mode/javascript"   
-            theme="ace/theme/ambiance" 
-            softtabs="true" 
-            wrap="true"
-            enable-live-autocompletion>
-for (var i=0; i<10; i++) {
-  console.log("Hello "+i);
-}
-          </ace-widget>
-        </template>
-      </demo-snippet>
+                <ace-widget theme="ace/theme/ambiance" softtabs="true" wrap="true">
+                  This is a nice widget... and we are writing a long text here to show the effets of the \`wrap\` attribute.
+                </ace-widget>
+              </template>
+            </demo-snippet>
 
 
-    </div>
+            <h3>ace-widget with some options and JavaScript mode</h3>
+            <demo-snippet class="centered-demo">
+              <template>
+
+                <ace-widget mode="ace/mode/javascript" theme="ace/theme/ambiance" softtabs="true" wrap="true">
+                  console.log("Hello world");
+                </ace-widget>
+              </template>
+            </demo-snippet>
+
+            <h3>ace-widget with some options and JavaScript mode with live auto-completion</h3>
+            <demo-snippet class="centered-demo">
+              <template>
+
+                <ace-widget mode="ace/mode/javascript" theme="ace/theme/ambiance" softtabs="true" wrap="true" enable-live-autocompletion="">
+                  console.log("Hello world");
+                </ace-widget>
+              </template>
+            </demo-snippet>
+
+
+          </div>`;
+
+      document.body.appendChild($_documentContainer.content);
+    </script>
   </body>
 </html>

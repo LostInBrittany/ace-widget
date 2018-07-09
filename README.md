@@ -6,11 +6,12 @@
 > Custom Element - just one tag, and no JS needed to provide
 > [Ace](http://ace.c9.io/) - The High Performance Code Editor
 >
-> Based on [pjako's fork](https://github.com/pjako/ace-element)
+> Originally based on [pjako's fork](https://github.com/pjako/ace-element)
 > of [PolymerLabs ace-element](https://github.com/PolymerLabs/ace-element).
 >
-> Hybrid Polymer element, 1.x-2.x ready
 
+> Polymer 3.x. element
+> The legacy Polymer 2.x version is available [here](https://www.webcomponents.org/element/LostInBrittany/ace-widget/)
 
 ## Doc and demo
 
@@ -38,46 +39,35 @@ https://lostinbrittany.github.io/ace-widget/
 
 ## Install
 
-Install the component using [Bower](http://bower.io/):
+
+Install the component using [npm](https://www.npmjs.com/):
 
 ```sh
-$ bower install LostInBrittany/ace-widget --save
+$ npm i @granite-elements/ace-widget --save
 ```
 
-Or [download as ZIP](https://github.com/LostInBrittany/ace-widget/archive/gh-pages.zip).
+Once installed, import it in your application:
+
+import '@granite-elements/ace-widget/ace-widget.js';
 
 
-## Usage
 
-1. Import Web Components' polyfill (if needed):
+## Running demos and tests in browser
 
-    ```html
-    <script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
-    ```
+1. Fork the `ace-widget` repository and clone it locally.
 
-2. Import Custom Element:
+1. Make sure you have [npm](https://www.npmjs.com/) 
+and the [Polymer CLI](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) installed.
 
-    ```html
-    <link rel="import" href="bower_components/ace-widget/ace-widget.html">
-    ```
+1. When in the `ace-widget` directory, run `npm install` to install dependencies.
 
-3. Start using it!
+1. Serve the project using Polyumer CLI:
 
-    ```html
-    <ace-widget>Editable code here</ace-widget>
-    ```
+    `polymer serve --module-resolution node --component-dir node_modules`
 
-### Note on ShadowDOM
+1. Open the demo in the browser
 
-The new tools from the Polymer team, like [Polymer CLI](https://github.com/Polymer/polymer-cli) use the true *shadow-dom* instead of *shady-dom*, by means of the setup of Polymer options:
-
-```
-    // setup Polymer options
-    window.Polymer = {lazyRegister: true, dom: 'shadow'};
-```
-
-Ace editor isn't currently not compatible with ShadowDOM, as it creates global styles that doesn't pass the ShadowDOM border.
-In order to make **ace-widget** work, I've taken inspiration from the [ace-shim-about-shadow-dom project](https://github.com/valaxy/ace-shim-about-shadow-dom/) and made a Polymer behavior that detects if an application using **ace-widget** is in ShadowDOM mode, and if it is, it copies Ace editor's styles into the component ShadowDOM.
+    - http://127.0.0.1:8080/components/@greanite-elements/ace-widget/demo
 
 
 ## Attributes

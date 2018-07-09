@@ -34,9 +34,9 @@
 
 
   </script>
-  <link rel="import" href="../polymer/polymer.html">
+  <script type="module" src="../../@polymer/polymer/polymer-legacy.js"></script>
 
-  <link rel="import"  href="../ace-widget/ace-widget.html">
+  <script type="module" src="./ace-widget.js"></script>
 
   <style>
 
@@ -70,9 +70,11 @@
     </template>
   </div>
 
-  <script>      
-    var template = document.querySelector('#template');
-  </script>
+  <script type="module">
+import '@polymer/polymer/polymer-legacy.js';
+import './ace-widget.js';
+var template = document.querySelector('#template');
+</script>
 
 </body>
 </html>
