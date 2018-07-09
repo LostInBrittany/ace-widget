@@ -164,7 +164,7 @@ class AceWidget extends PolymerElement {
 
     this.injectStyle('#ace_editor\\.css');
 
-    let baseUrl = this.baseUrl || `${this.importPath}../ace-builds/src-min-noconflict/`
+    let baseUrl = this.baseUrl || `${this.importPath}../../ace-builds/src-min-noconflict/`
 
     ace.config.set('basePath', baseUrl);
     ace.config.set('modePath', baseUrl);

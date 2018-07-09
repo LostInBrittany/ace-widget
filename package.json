@@ -9,7 +9,7 @@
   ],
   "homepage": "https://github.com/LostInBrittany/ace-widget",
   "name": "@granite-elements/ace-widget",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "resolutions": {
     "inherits": "2.0.3",
     "samsam": "1.1.3",
