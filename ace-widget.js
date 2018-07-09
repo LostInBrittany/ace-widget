@@ -310,7 +310,7 @@ class AceWidget extends PolymerElement {
 
   editorChangeAction() {
     // console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
-    this.dispatchEvent(new CustomEvent('editor-content', {value: this.editorValue, oldValue: this._value}));
+    this.dispatchEvent(new CustomEvent('editor-content', {detail: {value: this.editorValue, oldValue: this._value}}));
   }
 
   get editorValue() {
