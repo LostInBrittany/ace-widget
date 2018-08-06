@@ -19,6 +19,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
+
+import 'ace-builds/src-min-noconflict/ace.js';
+import 'ace-builds/src-min-noconflict/ext-language_tools.js';
+import 'ace-builds/src-min-noconflict/snippets/snippets.js';
+
+
 class AceWidget extends PolymerElement {
   static get template() {
     return html`
@@ -140,10 +146,16 @@ class AceWidget extends PolymerElement {
 
     let baseUrl = this.baseUrl || `${this.importPath}../../ace-builds/src-min-noconflict/`
 
-    await import(`${baseUrl}ace.js`);
-    await import(`${baseUrl}ext-language_tools.js`);
-    await import(`${baseUrl}snippets/snippets.js`);
-
+    // In non-minified mode, imports are parallelized, and sometimes `ext-language_tools.js` and
+    // `snippets.js` arrive before `ace.js` is ready. I am adding some tests here with dynamic imports 
+    // to fix thaty
+    if (!ace) {
+      await import(`${baseUrl}ace.js`);
+    }
+    if (!ace.require("ace/ext/language_tools")) {
+      await import(`${baseUrl}ext-language_tools.js`);
+    }
+    
 
     // console.debug("[ace-widget] connectedCallback")
     let div = this.$.editor;
