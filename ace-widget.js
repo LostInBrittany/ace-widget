@@ -26,9 +26,8 @@ import 'ace-builds/src-noconflict/snippets/snippets.js';
 
 
 var editorFocus = function() { 
-  console.error('my own focus');
   var _self = this;
-  setTimeout(function() {console.error('I got fucking focus after timeout', _self.textInput)
+  setTimeout(function() {
       if (!_self.isFocused())
           _self.textInput.focus();
   });
