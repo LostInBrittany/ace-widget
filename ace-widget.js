@@ -20,9 +20,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 
-import 'ace-builds/src-min-noconflict/ace.js';
-import 'ace-builds/src-min-noconflict/ext-language_tools.js';
-import 'ace-builds/src-min-noconflict/snippets/snippets.js';
+import 'ace-builds/src-noconflict/ace.js';
+import 'ace-builds/src-noconflict/ext-language_tools.js';
+import 'ace-builds/src-noconflict/snippets/snippets.js';
+
+
+var editorFocus = function() { 
+  console.error('my own focus');
+  var _self = this;
+  setTimeout(function() {console.error('I got fucking focus after timeout', _self.textInput)
+      if (!_self.isFocused())
+          _self.textInput.focus();
+  });
+  this.textInput.$focusScroll = "browser"
+  this.textInput.focus();
+};
+
 
 
 class AceWidget extends PolymerElement {
@@ -156,12 +169,14 @@ class AceWidget extends PolymerElement {
       await import(`${baseUrl}ext-language_tools.js`);
     }
     
+    console.error(ace.TextInput);
 
     // console.debug("[ace-widget] connectedCallback")
     let div = this.$.editor;
     div.style.width = '100%';
     div.style.height = '100%';
     this.editor = ace.edit(div);
+    this.editor.focus = editorFocus;
     //this.init();
 
     this.dispatchEvent(new CustomEvent('editor-ready', { detail: {value: this.editor, oldValue: null}}));
@@ -185,6 +200,9 @@ class AceWidget extends PolymerElement {
     ace.config.set('themePath', baseUrl);
     ace.config.set('workerPath', baseUrl);
 
+    editor.on('click', (evt) => { editor.focus(true); console.error('click FUCK')} );
+    editor.on('input', (evt) => { console.error('input FUCK')} );
+    editor.on('focus', (evt) => { console.error('focus FUCK')} );
     this.themeChanged();
     this.editorValue = '';
     editor.setOption('enableSnippets', this.enableSnippets);
