@@ -168,8 +168,6 @@ class AceWidget extends PolymerElement {
       await import(`${baseUrl}ext-language_tools.js`);
     }
     
-    console.error(ace.TextInput);
-
     // console.debug("[ace-widget] connectedCallback")
     let div = this.$.editor;
     div.style.width = '100%';
