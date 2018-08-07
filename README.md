@@ -2,10 +2,10 @@
 
 # ace-widget #
 
-> Even <strong>more</strong> embeddable code editor
-> Custom Element - just one tag, and no JS needed to provide
-> [Ace](http://ace.c9.io/) - The High Performance Code Editor
->
+Even <strong>more</strong> embeddable code editor
+Custom Element - just one tag, and no JS needed to provide
+[Ace](http://ace.c9.io/) - The High Performance Code Editor
+
 > Originally based on [pjako's fork](https://github.com/pjako/ace-element)
 > of [PolymerLabs ace-element](https://github.com/PolymerLabs/ace-element).
 >
@@ -24,8 +24,8 @@ https://lostinbrittany.github.io/ace-widget/
 ```
 <custom-element-demo>
   <template>
-    <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="ace-widget.html">
+    <script src="../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    <script type="module" src="../../@granite-elements/ace-widget/ace-widget.js"></script>
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
