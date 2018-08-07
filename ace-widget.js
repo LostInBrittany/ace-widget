@@ -199,9 +199,6 @@ class AceWidget extends PolymerElement {
     ace.config.set('themePath', baseUrl);
     ace.config.set('workerPath', baseUrl);
 
-    editor.on('click', (evt) => { editor.focus(true); console.error('click FUCK')} );
-    editor.on('input', (evt) => { console.error('input FUCK')} );
-    editor.on('focus', (evt) => { console.error('focus FUCK')} );
     this.themeChanged();
     this.editorValue = '';
     editor.setOption('enableSnippets', this.enableSnippets);
