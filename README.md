@@ -1,4 +1,6 @@
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/LostInBrittany/ace-widget)
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/LostInBrittanyace-widget)
+[![Stars on vaadin.com/directory](https://img.shields.io/vaadin-directory/star/LostInBrittanyace-widget.svg)](https://vaadin.com/directory/component/LostInBrittanyace-widget)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/LostInBrittany/ace-widget)  
 
 # ace-widget #
 
