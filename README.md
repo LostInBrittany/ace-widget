@@ -26,6 +26,7 @@ https://lostinbrittany.github.io/ace-widget/
 ```
 <custom-element-demo>
   <template>
+    <script src="./@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script type="module" src="../../@granite-elements/ace-widget/ace-widget.js"></script>
     <next-code-block></next-code-block>
