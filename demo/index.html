@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
 @license MIT
-Copyright (c) 2015 Horacio "LostInBrittany" Gonzalez
+Copyright (c) 2015-2025 Horacio "LostInBrittany" Gonzalez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -11,141 +11,311 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -->
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <title>ace-widget demo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <title>ace-widget demo</title>
 
-    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
 
-    <script>
+  <script type="module" src="../ace-widget.js"></script>
 
-      // setup Polymer options
-      window.Polymer = {lazyRegister: true, dom: 'shadow'};
-
-      // load webcomponents polyfills
-      (function() {
-        if ('registerElement' in document
-            && 'import' in document.createElement('link')
-            && 'content' in document.createElement('template')) {
-          // browser has web components
-        } else {
-          // polyfill web components
-          var e = document.createElement('script');
-          e.src = '../../../@webcomponents/webcomponentsjs/webcomponents-loader.js';
-          document.head.appendChild(e);
-        }
-      })();
-
-
-    </script>
-    <script type="module" src="../../../@polymer/polymer/polymer-legacy.js"></script>
-
-
-    <script type="module" src="../../../@polymer/paper-styles/color.js"></script>
-    <script type="module" src="../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
-    <script type="module" src="../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
-    <script type="module" src="../../../@polymer/iron-icons/iron-icons.js"></script>
-
-    <script type="module" src="../ace-widget.js"></script>
-
-    <!-- FIXME(polymer-modulizer):
-        These imperative modules that innerHTML your HTML are
-        a hacky way to be sure that any mixins in included style
-        modules are ready before any elements that reference them are
-        instantiated, otherwise the CSS @apply mixin polyfill won't be
-        able to expand the underlying CSS custom properties.
-        See: https://github.com/Polymer/polymer-modulizer/issues/154
-        -->
-    <script type="module">
-      const $_documentContainer = document.createElement('template');
-      $_documentContainer.setAttribute('style', 'display: none;');
-
-      $_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
-            .spacer-10 { width:100%; height:10px; }
-            .spacer-50 { width:100%; height:50px; }
-            .vertical-section-container {
-              max-width: 550px;
-            }
-          </style>`;
-
-      document.head.appendChild($_documentContainer.content);
-    </script>
-  </head>
-
-  <body unresolved>
-
+  <style>
+    :root {
+      --primary-color: #3f51b5;
+      --accent-color: #ff4081;
+      --light-primary-color: #c5cae9;
+      --dark-primary-color: #303f9f;
+      --primary-text-color: #212121;
+      --secondary-text-color: #757575;
+      --divider-color: #bdbdbd;
+      --error-color: #dd2c00;
+    }
     
-    <script type="module">
-      const $_documentContainer = document.createElement('template');
+    body {
+      font-family: 'Roboto', 'Noto', sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      background-color: #fafafa;
+      color: var(--primary-text-color);
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 400;
+    }
+    
+    .demo-card {
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    
+    .demo-card h2 {
+      background-color: var(--light-primary-color);
+      color: var(--dark-primary-color);
+      margin: 0;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    
+    .demo-card .content {
+      padding: 16px;
+    }
+    
+    .demo-card .code {
+      padding: 16px;
+      background-color: #f5f5f5;
+      border-top: 1px solid var(--divider-color);
+      font-family: monospace;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+    
+    .controls {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: var(--dark-primary-color);
+    }
+    
+    .log-container {
+      margin-top: 24px;
+      padding: 16px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      border: 1px solid var(--divider-color);
+    }
+    
+    .log-container h3 {
+      margin-top: 0;
+      color: var(--secondary-text-color);
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    #logOutput {
+      font-family: monospace;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 8px;
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 2px;
+    }
+    
+    ace-widget {
+      height: 350px;
+      width: 100%;
+      --ace-widget-border-color: #e0e0e0;
+    }
+  </style>
+</head>
 
-      $_documentContainer.innerHTML = `<div class="vertical-section-container centered">
+<body>
+  <header>
+    <h1>ace-widget Demo</h1>
+  </header>
+  
+  <div class="container">
+    <div class="demo-card">
+      <h2>Basic Usage with Placeholder</h2>
+      <div class="content">
+        <ace-widget id="basic" placeholder="Write something... Anything..." initial-focus></ace-widget>
+      </div>
+      <div class="code">&lt;ace-widget placeholder="Write something... Anything..." initial-focus&gt;&lt;/ace-widget&gt;</div>
+    </div>
+    
+    <div class="demo-card">
+      <h2>With Content from HTML</h2>
+      <div class="content">
+        <ace-widget id="html-content">
+          This is a nice widget
+        </ace-widget>
+      </div>
+      <div class="code">&lt;ace-widget&gt;
+  This is a nice widget
+&lt;/ace-widget&gt;</div>
+    </div>
+    
+    <div class="demo-card">
+      <h2>With Content from Value Attribute</h2>
+      <div class="content">
+        <ace-widget id="value-content" theme="ace/theme/eclipse" softtabs wrap value="This is a nice widget"></ace-widget>
+      </div>
+      <div class="code">&lt;ace-widget theme="ace/theme/eclipse" softtabs wrap value="This is a nice widget"&gt;&lt;/ace-widget&gt;</div>
+    </div>
+    
+    <div class="demo-card">
+      <h2>With Theme, Soft Tabs, and Wrap</h2>
+      <div class="content">
+        <ace-widget id="options" theme="ace/theme/monokai" softtabs wrap value="This is a nice widget... and we are writing a long text here to show the effects of the wrap attribute."></ace-widget>
+      </div>
+      <div class="code">&lt;ace-widget theme="ace/theme/monokai" softtabs wrap value="This is a nice widget... and we are writing a long text here to show the effects of the wrap attribute."&gt;&lt;/ace-widget&gt;</div>
+    </div>
+    
+    <div class="demo-card">
+      <h2>JavaScript Mode</h2>
+      <div class="content">
+        <ace-widget id="js-mode" mode="ace/mode/javascript" theme="ace/theme/eclipse" softtabs wrap value="
+console.log('Hello world');
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+const result = greet('Ace Editor');
+console.log(result);
+        "></ace-widget>
+      </div>
+      <div class="code">&lt;ace-widget mode="ace/mode/javascript" theme="ace/theme/eclipse" softtabs wrap value="
+console.log('Hello world');
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+const result = greet('Ace Editor');
+console.log(result);"&gt;&lt;/ace-widget&gt;</div>
+    </div>
+    
+    <div class="demo-card">
+      <h2>JavaScript with Live Auto-completion</h2>
+      <div class="content">
+        <ace-widget id="js-autocomplete" mode="ace/mode/javascript" theme="ace/theme/eclipse" softtabs wrap enable-live-autocompletion enable-snippets value="
+console.log('Hello world');
+// Try typing 'doc' and press Tab for snippet
+// Or type 'console.' to see autocompletion
+const obj = {
+  name: 'Ace Editor',
+  version: '1.0.0'
+};
+// Type obj. to see property suggestions
+        "></ace-widget>
+      </div>
+      <div class="code">&lt;ace-widget mode="ace/mode/javascript" theme="ace/theme/eclipse" softtabs wrap enable-live-autocompletion enable-snippets value="// Content here"&gt;&lt;/ace-widget&gt;</div>
+    </div>
+    
+    <div class="demo-card">
+      <h2>Interactive Demo</h2>
+      <div class="content">
+        <ace-widget id="interactive" mode="ace/mode/javascript" theme="ace/theme/eclipse" softtabs wrap value="
+// This is an interactive editor
+// You can change its properties using the controls below
 
-            <h3>ace-widget with empty content and intitial focus</h3>
-            <demo-snippet class="centered-demo">
-              <template>
-                <ace-widget placeholder="Write something... Anything..." initial-focus="">
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
 
+console.log(fibonacci(10));
+        "></ace-widget>
+        
+        <div class="controls">
+          <button onclick="changeTheme('ace/theme/eclipse')">Eclipse Theme</button>
+          <button onclick="changeTheme('ace/theme/monokai')">Monokai Theme</button>
+          <button onclick="changeTheme('ace/theme/github')">GitHub Theme</button>
+          <button onclick="changeMode('ace/mode/javascript')">JavaScript</button>
+          <button onclick="changeMode('ace/mode/html')">HTML</button>
+          <button onclick="changeMode('ace/mode/css')">CSS</button>
+          <button onclick="toggleWrap()">Toggle Wrap</button>
+          <button onclick="toggleReadOnly()">Toggle ReadOnly</button>
+          <button onclick="getValue()">Get Value</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Log container for event output -->
+    <div class="log-container">
+      <h3>Event Log</h3>
+      <div id="logOutput"></div>
+    </div>
+  </div>
 
-                </ace-widget>
-              </template>
-            </demo-snippet>
-
-            <h3>ace-widget with content coming from HTML content</h3>
-            <demo-snippet class="centered-demo">
-              <template>
-
-                <ace-widget>
-                  This is a nice widget
-                </ace-widget>
-              </template>
-            </demo-snippet>
-
-
-            <h3>ace-widget with content coming from \`value\` attribute</h3>
-            <demo-snippet class="centered-demo">
-              <template>
-
-                <ace-widget theme="ace/theme/eclipse" softtabs="true" wrap="true" value="This is a nice widget">
-                </ace-widget>
-              </template>
-            </demo-snippet>
-
-            <h3>ace-widget with some options (theme, softtabs, wrap)</h3>
-            <demo-snippet class="centered-demo">
-              <template>
-
-                <ace-widget theme="ace/theme/ambiance" softtabs="true" wrap="true">
-                  This is a nice widget... and we are writing a long text here to show the effets of the \`wrap\` attribute.
-                </ace-widget>
-              </template>
-            </demo-snippet>
-
-
-            <h3>ace-widget with some options and JavaScript mode</h3>
-            <demo-snippet class="centered-demo">
-              <template>
-
-                <ace-widget mode="ace/mode/javascript" theme="ace/theme/ambiance" softtabs="true" wrap="true">
-                  console.log("Hello world");
-                </ace-widget>
-              </template>
-            </demo-snippet>
-
-            <h3>ace-widget with some options and JavaScript mode with live auto-completion</h3>
-            <demo-snippet class="centered-demo">
-              <template>
-
-                <ace-widget mode="ace/mode/javascript" theme="ace/theme/ambiance" softtabs="true" wrap="true" enable-live-autocompletion="" enable-snippets="">
-                  console.log("Hello world");
-                </ace-widget>
-              </template>
-            </demo-snippet>
-
-
-          </div>`;
-
-      document.body.appendChild($_documentContainer.content);
-    </script>
-  </body>
+  <script>
+    // Wait for custom elements to be defined
+    window.addEventListener('WebComponentsReady', function() {
+      console.log('Web Components Ready');
+    });
+    
+    // Get references to elements
+    const interactiveEditor = document.getElementById('interactive');
+    const logOutput = document.getElementById('logOutput');
+    
+    // Log events
+    function log(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      logOutput.innerHTML += `[${timestamp}] ${message}\n`;
+      logOutput.scrollTop = logOutput.scrollHeight;
+    }
+    
+    // Add event listeners
+    document.querySelectorAll('ace-widget').forEach(editor => {
+      editor.addEventListener('editor-ready', function(e) {
+        log(`Editor ready: ${editor.id || 'unnamed'} (${e.detail.value ? 'success' : 'fail'})`);
+      });
+      
+      editor.addEventListener('editor-content', function(e) {
+        log(`Content changed: ${editor.id || 'unnamed'} (${e.detail.value.length} chars)`);
+      });
+    });
+    
+    // Control functions
+    function changeTheme(theme) {
+      interactiveEditor.theme = theme;
+      log(`Theme changed to: ${theme}`);
+    }
+    
+    function changeMode(mode) {
+      interactiveEditor.mode = mode;
+      log(`Mode changed to: ${mode}`);
+    }
+    
+    function toggleWrap() {
+      interactiveEditor.wrap = !interactiveEditor.wrap;
+      log(`Wrap ${interactiveEditor.wrap ? 'enabled' : 'disabled'}`);
+    }
+    
+    function toggleReadOnly() {
+      interactiveEditor.readonly = !interactiveEditor.readonly;
+      log(`ReadOnly ${interactiveEditor.readonly ? 'enabled' : 'disabled'}`);
+    }
+    
+    function getValue() {
+      const value = interactiveEditor.value;
+      log(`Current value: ${value.length} characters`);
+      console.log(value);
+    }
+  </script>
+</body>
 </html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ace Widget Simple Test</title>
+  <script type="module" src="../ace-widget.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    .demo-container {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    ace-widget {
+      height: 400px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 8px 16px;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background: #3367d6;
+    }
+    
+    #log {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: monospace;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ace Widget Simple Test</h1>
+  
+  <div class="demo-container">
+    <ace-widget 
+      id="editor" 
+      theme="ace/theme/textmate" 
+      mode="ace/mode/javascript" 
+      placeholder="Start typing some JavaScript..." 
+      initial-focus debug>
+    </ace-widget>
+    
+    
+    <div id="log"></div>
+  </div>
+  
+  <script type="module">
+    const editor = document.getElementById('editor');
+    const logElement = document.getElementById('log');
+    
+    // Logging function
+    function log(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      logElement.innerHTML += `[${timestamp}] ${message}<br>`;
+      logElement.scrollTop = logElement.scrollHeight;
+    }
+    
+    // Event listeners
+    editor.addEventListener('editor-ready', (e) => {
+      log('Editor ready event fired');
+    });
+    
+    editor.addEventListener('editor-content', (e) => {
+      log(`Content changed (${e.detail.value.length} chars)`);
+    });
+    
+    // Initial log
+    log('Demo initialized - try the buttons above');
+  </script>
+</body>
+</html>

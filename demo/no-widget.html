@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acet Simple Test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    .demo-container {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      position: relative;
+    }
+    
+    #editor {
+      position: relative;
+      width: 500px;
+      height: 400px;
+    }
+    
+  </style>
+</head>
+<body>
+  <h1>Ace without widget</h1>
+
+  <div class="demo-container">
+    <div id="editor"></div>
+  </div>
+    
+  <script type="module" src="../node_modules/ace-builds/src-min-noconflict/ace.js"></script>
+  <script type="module">
+    const _editor = document.getElementById('editor');
+    let editor = ace.edit(_editor);
+    editor.setTheme("ace/theme/textmate");
+
+  </script>
+</body>
+</html>

@@ -12,8 +12,9 @@ Custom Element - just one tag, and no JS needed to provide
 > of [PolymerLabs ace-element](https://github.com/PolymerLabs/ace-element).
 >
 
-> Polymer 3.x. element
-> The legacy Polymer 2.x version is available [here](https://www.webcomponents.org/element/LostInBrittany/ace-widget/)
+> Modern implementation using Lit 3.1
+> 
+> The legacy Polymer implementation is still available as `ace-widget-old.js`
 
 ## Doc and demo
 
@@ -22,21 +23,11 @@ https://lostinbrittany.github.io/ace-widget/
 
 ## Usage example
 
-<!---
-```
-<custom-element-demo>
-  <template>
-    <script src="./@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script src="../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script type="module" src="../../@granite-elements/ace-widget/ace-widget.js"></script>
-    <next-code-block></next-code-block>
-  </template>
-</custom-element-demo>
-```
--->
 ```html
-  <ace-widget placeholder="Write something... Anything..." initial-focus>
-  </ace-widget>
+<script type="module" src="@granite-elements/ace-widget/ace-widget.js"></script>
+
+<ace-widget placeholder="Write something... Anything..." initial-focus>
+</ace-widget>
 ```
 
 
@@ -51,7 +42,9 @@ $ npm i @granite-elements/ace-widget --save
 
 Once installed, import it in your application:
 
+```js
 import '@granite-elements/ace-widget/ace-widget.js';
+```
 
 
 
@@ -59,18 +52,19 @@ import '@granite-elements/ace-widget/ace-widget.js';
 
 1. Fork the `ace-widget` repository and clone it locally.
 
-1. Make sure you have [npm](https://www.npmjs.com/) 
-and the [Polymer CLI](https://www.polymer-project.org/3.0/docs/tools/polymer-cli) installed.
+1. Make sure you have [npm](https://www.npmjs.com/) installed.
 
 1. When in the `ace-widget` directory, run `npm install` to install dependencies.
 
-1. Serve the project using Polyumer CLI:
+1. Serve the project using the development server:
 
-    `polymer serve --npm`
+    `npm start`
 
-1. Open the demo in the browser
+This will automatically open the demo page in your default browser.
 
-    - http://127.0.0.1:8080/components/@greanite-elements/ace-widget/demo
+### Simple Test Page
+
+A simplified test page is also available at `/demo/simple.html`. This page contains a minimal setup with just one editor instance and controls for toggling debug features. It's useful for quick testing and debugging.
 
 
 ## Attributes
@@ -89,6 +83,9 @@ Attribute     | Type      | Default | Description
 `maxlines`    | *Number*  | 30      | `Editor.setOptions({minlines: maxlines})`
 `initialFocus`| *Boolean* | ``      | If true, `Editor.focus()` is called upon initialisation
 `placeholder` | *String*  | ``      | A placeholder text to show when the editor is empty
+`verbose`     | *Boolean* | `false` | If true, outputs basic debug information to the console
+`debug`       | *Boolean* | `false` | If true, outputs detailed debug information to the console
+`disableWorker`| *Boolean*| `false` | If true, disables Ace editor worker scripts (useful for environments where workers don't work)
 
 ## Properties
 
@@ -111,6 +108,10 @@ Name             |  Description
 3. Commit your changes: `git commit -m 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
+
+## Implementation Details
+
+This component is built with Lit 3.1, a modern, lightweight web component library. It provides a clean, efficient wrapper around the Ace editor with reactive properties and a simple API.
 
 ## License
 
